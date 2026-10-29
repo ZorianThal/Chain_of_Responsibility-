@@ -266,16 +266,7 @@ foreach (var request in requests)
 
 Структура проекта
 
-SupportDesk/
-├── Models/
-│   └── SupportRequest.cs
-├── Handlers/
-│   ├── SupportHandler.cs
-│   ├── FirstLineHandler.cs
-│   ├── DeveloperHandler.cs
-│   ├── SystemAdministratorHandler.cs
-│   └── ManualReviewHandler.cs
-└── Program.cs
+<img width="290" height="217" alt="image" src="https://github.com/user-attachments/assets/23b5d4c7-14e1-4d43-aa41-eebd0dc65834" />
 
 Обязательные условия
 
