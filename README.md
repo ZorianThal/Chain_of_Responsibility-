@@ -1,44 +1,62 @@
-# Chain_of_Responsibility-
+Chain of Responsibility — Цепочка обязанностей
 
-1. Суть паттерна
+![Chain of Responsibility Design Pattern](https://images.openai.com/static-rsc-4/lnKUEaTGGQhd_7NIFrkH4Wx2pxyb7vGza6zimDTAjdndcRK4IZrnEeZg1XkEXos8b__qjhSXmLynKwe_tn-6fzWAB-USMjXs-djuhwMCmcKph4A1my_XqLWqpFzoi-X798IzvfetiFYD6okx7l8dtMv660k52LbiEJoIpkMtSPs?purpose=inline)
+
+[partnerpens.hashnode.dev](https://partnerpens.hashnode.dev/chain-of-responsibility-design-pattern?utm_source=chatgpt.com)
+
+## 1. Суть паттерна
+
 Chain of Responsibility позволяет передавать запрос последовательно по цепочке обработчиков. Каждый обработчик решает, может ли он обработать запрос сам, нужно ли передать его дальше или остановить обработку.
 
 Представь систему обработки заявок в колледже:
+
 - Преподаватель решает обычные вопросы.
+    
 - Заведующий отделением разбирает более сложные.
+    
 - Директор рассматривает вопросы, требующие высшего уровня полномочий.
+    
+
 Преподавателю не нужно самому знать все правила директора. Он либо решает вопрос, либо передаёт его следующему звену.
+
 Заявка
 
 Например, запрос на покупку оборудования
-
 
 Преподаватель
 
 Может решить вопрос в пределах своего лимита?
 
-
 Заведующий отделением
 
 Если полномочий недостаточно — передаёт дальше
-
 
 Директор
 
 Рассматривает крупную заявку
 
+## 2. Когда он нужен
 
-2. Когда он нужен
 Используй этот паттерн, когда:
+
 - заранее неизвестно, какой объект должен обработать запрос;
+    
 - несколько обработчиков могут попытаться его обработать;
+    
 - хочется добавлять и менять обработчики без переписывания вызывающего кода;
-- не хочется создавать длинные конструкции if / else if в одном месте.
+    
+- не хочется создавать длинные конструкции `if / else if` в одном месте.
+    
+
 Например: обработка HTTP-запросов, фильтры сообщений, проверка платежей, техническая поддержка, логирование.
-3. Учебный пример на C#
+
+## 3. Учебный пример на C#
+
 Создадим цепочку проверки заявок на покупку оборудования. Каждый сотрудник имеет свой лимит согласования.
 
 Структура проекта:
+
+```
 ApprovalChain/
 ├── Models/
 │   └── PurchaseRequest.cs
@@ -48,10 +66,13 @@ ApprovalChain/
 │   ├── DepartmentHeadHandler.cs
 │   └── DirectorHandler.cs
 └── Program.cs
+```
 
+### Файл `Models/PurchaseRequest.cs`
 
-Файл Models/PurchaseRequest.cs
 Модель заявки — информация, которую передают между обработчиками.
+
+```
 namespace ApprovalChain.Models;
 
 public class PurchaseRequest
@@ -65,10 +86,13 @@ public class PurchaseRequest
         Amount = amount;
     }
 }
+```
 
+### Файл `Handlers/ApprovalHandler.cs`
 
-Файл Handlers/ApprovalHandler.cs
 Базовый обработчик хранит ссылку на следующее звено цепочки.
+
+```
 using ApprovalChain.Models;
 
 namespace ApprovalChain.Handlers;
@@ -106,14 +130,22 @@ public abstract class ApprovalHandler
 
     protected abstract void Approve(PurchaseRequest request);
 }
-
+```
 
 Разберём ключевые моменты:
-- SetNext() задаёт следующий обработчик.
-- CanApprove() определяет, подходит ли заявка этому звену.
-- Approve() выполняет согласование.
-- Handle() решает, обработать запрос или передать дальше.
-Файл Handlers/TeacherHandler.cs
+
+- `SetNext()` задаёт следующий обработчик.
+    
+- `CanApprove()` определяет, подходит ли заявка этому звену.
+    
+- `Approve()` выполняет согласование.
+    
+- `Handle()` решает, обработать запрос или передать дальше.
+    
+
+### Файл `Handlers/TeacherHandler.cs`
+
+```
 using ApprovalChain.Models;
 
 namespace ApprovalChain.Handlers;
@@ -132,9 +164,11 @@ public class TeacherHandler : ApprovalHandler
             $"({request.Amount:N0} руб.)");
     }
 }
+```
 
+### Файл `Handlers/DepartmentHeadHandler.cs`
 
-Файл Handlers/DepartmentHeadHandler.cs
+```
 using ApprovalChain.Models;
 
 namespace ApprovalChain.Handlers;
@@ -153,9 +187,11 @@ public class DepartmentHeadHandler : ApprovalHandler
             $"({request.Amount:N0} руб.)");
     }
 }
+```
 
+### Файл `Handlers/DirectorHandler.cs`
 
-Файл Handlers/DirectorHandler.cs
+```
 using ApprovalChain.Models;
 
 namespace ApprovalChain.Handlers;
@@ -174,10 +210,13 @@ public class DirectorHandler : ApprovalHandler
             $"({request.Amount:N0} руб.)");
     }
 }
+```
 
+### Файл `Program.cs`
 
-Файл Program.cs
-Здесь только создание цепочки и отправка заявок. Используем современные top-level statements — без вручную написанного static void Main().
+Здесь только создание цепочки и отправка заявок. Используем современные top-level statements — без вручную написанного `static void Main()`.
+
+```
 using ApprovalChain.Models;
 using ApprovalChain.Handlers;
 
@@ -200,9 +239,11 @@ foreach (var request in requests)
 {
     teacher.Handle(request);
 }
+```
 
+## 4. Результат выполнения
 
-4. Результат выполнения
+```
 Преподаватель согласовал: Клавиатура (2 000 руб.)
 Заведующий согласовал: Новый принтер (25 000 руб.)
 Директор согласовал: Компьютерный класс (350 000 руб.)
