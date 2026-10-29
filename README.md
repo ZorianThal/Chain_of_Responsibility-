@@ -1,9 +1,5 @@
 Chain of Responsibility — Цепочка обязанностей
 
-![Chain of Responsibility Design Pattern](https://images.openai.com/static-rsc-4/lnKUEaTGGQhd_7NIFrkH4Wx2pxyb7vGza6zimDTAjdndcRK4IZrnEeZg1XkEXos8b__qjhSXmLynKwe_tn-6fzWAB-USMjXs-djuhwMCmcKph4A1my_XqLWqpFzoi-X798IzvfetiFYD6okx7l8dtMv660k52LbiEJoIpkMtSPs?purpose=inline)
-
-[partnerpens.hashnode.dev](https://partnerpens.hashnode.dev/chain-of-responsibility-design-pattern?utm_source=chatgpt.com)
-
 ## 1. Суть паттерна
 
 Chain of Responsibility позволяет передавать запрос последовательно по цепочке обработчиков. Каждый обработчик решает, может ли он обработать запрос сам, нужно ли передать его дальше или остановить обработку.
